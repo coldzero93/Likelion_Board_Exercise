@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LikelionCRUD</title>
+</head>
+<body>
+  <div id="user-manager" class="text-right">
+    <% if user_signed_in? %>
+      <a class="btn btn-primary" href="/users/edit"><%= current_user.name %></a>
+      <a class="btn btn-primary" data-method="delete" href="/users/sign_out">SIGN OUT</a>
+    <% else %>
+      <a class="btn btn-primary" href="/users/sign_in">SIGN IN</a>
+      <a class="btn btn-primary" href="/users/sign_up">SIGN UP</a>
+    <% end %>
+  </div>
+    <div id="title-area">
+    <h1>글쓰기</h1>
+  </div>
+  <div>
+    <form action="/post" accept-charset="UTF-8" method="post">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <label style="font-weight: bold;">작성자</label><br>
+      <label><%= current_user.name %></label><br><br>
+      <label for="post[title]" style="font-weight: bold;">제목</label><br>
+      <input type="text" placeholder="제목을 입력하세요" name="post[title]" style="width: 100%;"><br><br>
+      <label for="post[content]" style="font-weight: bold;">내용</label><br>
+      <textarea type="text" placeholder="내용을 입력하세요" name="post[content]" rows="10" style="width: 100%;"></textarea><br><br>
+      <div class="text-right">
+        <input class="btn btn-primary" type="submit" value="글쓰기">
+        <a class="btn btn-primary" href="/" data-method="get">취소</a>
+      </div>
+    </form>
+  </div>
+  <div>
+</body>
+
+</html>

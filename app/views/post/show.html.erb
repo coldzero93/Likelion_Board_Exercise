@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LikelionCRUD</title>
+</head>
+<body>
+  <div id="user-manager" class="text-right">
+    <% if user_signed_in? %>
+      <a class="btn btn-primary" href="/users/edit"><%= current_user.name %></a>
+      <a class="btn btn-primary" data-method="delete" href="/users/sign_out">SIGN OUT</a>
+    <% else %>
+      <a class="btn btn-primary" href="/users/sign_in">SIGN IN</a>
+      <a class="btn btn-primary" href="/users/sign_up">SIGN UP</a>
+    <% end %>
+  </div>
+    <div id="title-area">
+    <h1>글읽기</h1>
+  </div>
+  <div>
+      <label style="font-weight: bold;">작성자</label><br>
+      <label><%= @post.writer %></label><br><br>
+      <label style="font-weight: bold;">제목</label><br>
+      <label><%= @post.title %></label><br><br>
+      <label style="font-weight: bold;">내용</label><br>
+      <label><%= @post.content %></label><br><br>
+      <div class="text-right">
+        <% if user_signed_in? && current_user.id == @post.user_id %>
+          <a class="btn btn-primary" href="/post/edit/<%= @post.id %>" data-method="get">수정</a>
+          <a class="btn btn-primary" href="/post/<%= @post.id %>" data-method="delete">삭제</a>
+        <% end %>
+        <a class="btn btn-primary" href="/" data-method="get">돌아가기</a>
+      </div>
+    </form>
+  </div>
+  <div>
+    <% if @previous %>
+      <a class="btn btn-primary" href="/post/<%= @previous %>" method="get">이전</a>
+    <% end %>
+    <% if @next %>
+      <a class="btn btn-primary" href="/post/<%= @next %>" method="get">다음</a>
+    <% end %>
+  </div>
+  <div>
+    ———————————————————————————
+    <% @comments.each do |c| %>
+    <p style="font-weight: bold;"><%= c.writer %></p>
+    <p><%= c.content %></p>
+    <% if user_signed_in? && current_user.id == c.user_id %>
+    <a data-method="delete" href="/comment/<%=c.id%>">삭제</a><br>
+    <% end %>
+    ———————————————————————————
+    <% end %>
+    <% if user_signed_in? %>
+    <form action="/comment/<%=@post.id%>" method="post">
+      <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+      <textarea name="comment[content]" id="textarea" style="width: 435px;"></textarea>
+      <input class="btn" type="submit" value="댓글달기">
+    </form>
+    <% end %>
+  </div>
+</body>
+
+</html>
